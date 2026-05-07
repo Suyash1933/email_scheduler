@@ -12,6 +12,9 @@ import { prisma } from './config/prisma';
 const app = express();
 
 // Middleware
+const isProduction = process.env.NODE_ENV === 'production' || config.frontendUrl.startsWith('https');
+
+app.set('trust proxy', 1);
 app.use(cors({
   origin: config.frontendUrl,
   credentials: true,
@@ -24,10 +27,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // set true in production with HTTPS
+      secure: isProduction,
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      sameSite: 'lax',
+      sameSite: isProduction ? 'none' : 'lax',
     },
   })
 );
