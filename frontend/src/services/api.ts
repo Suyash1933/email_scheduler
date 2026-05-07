@@ -1,6 +1,6 @@
 import type { User, EmailJob, ScheduleEmailRequest } from '../types';
 
-const API_BASE = '';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 async function fetchApi<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${url}`, {

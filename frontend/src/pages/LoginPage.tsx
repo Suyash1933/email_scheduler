@@ -2,7 +2,8 @@ import { Mail, Clock, Shield } from 'lucide-react';
 
 const LoginPage = () => {
   const handleGoogleLogin = () => {
-    window.location.href = '/auth/google';
+    const apiBase = import.meta.env.VITE_API_URL || '';
+    window.location.href = `${apiBase}/auth/google`;
   };
 
   return (
