@@ -9,26 +9,31 @@ export const getTransporter = async (): Promise<nodemailer.Transporter> => {
   if (config.smtp.user && config.smtp.pass) {
     transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
-      port: 587,
+      port: 465,
+      secure: true,
       auth: {
         user: config.smtp.user,
         pass: config.smtp.pass,
       },
+      connectionTimeout: 10000,
+      socketTimeout: 10000,
     });
   } else {
     const testAccount = await nodemailer.createTestAccount();
     transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
-      port: 587,
+      port: 465,
+      secure: true,
       auth: {
         user: testAccount.user,
         pass: testAccount.pass,
       },
+      connectionTimeout: 10000,
+      socketTimeout: 10000,
     });
     console.log('Ethereal Email credentials:');
     console.log('  User:', testAccount.user);
     console.log('  Pass:', testAccount.pass);
-    console.log('  Preview URL: https://ethereal.email/login');
   }
 
   return transporter;
