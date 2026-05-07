@@ -16,7 +16,9 @@ interface EmailJobData {
 }
 
 const processEmailJob = async (job: Job<EmailJobData>) => {
-  const { emailJobId, recipientEmail, subject, body, senderEmail, senderName } = job.data;
+  const { emailJobId, recipientEmail, subject, body, senderName } = job.data;
+
+  console.log(`Processing job ${emailJobId} for ${recipientEmail}`);
 
   // Check idempotency - don't send if already sent
   const dbJob = await prisma.emailJob.findUnique({ where: { id: emailJobId } });
@@ -30,7 +32,6 @@ const processEmailJob = async (job: Job<EmailJobData>) => {
   if (!rateCheck.allowed) {
     console.log(`Rate limit exceeded. Rescheduling job ${emailJobId} for ${rateCheck.retryAfterMs}ms later`);
 
-    // Reschedule the job into the next hour window
     await emailQueue.add(
       'send-email',
       job.data,
@@ -66,7 +67,7 @@ const processEmailJob = async (job: Job<EmailJobData>) => {
       to: recipientEmail,
       subject,
       body,
-      from: `"${senderName}" <${senderEmail}>`,
+      from: `"${senderName}" <scheduler@emailscheduler.com>`,
     });
 
     await prisma.emailJob.update({

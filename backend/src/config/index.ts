@@ -22,10 +22,10 @@ export const config = {
     pass: process.env.ETHEREAL_PASS || '',
   },
   worker: {
-    concurrency: parseInt(process.env.WORKER_CONCURRENCY || '5'),
+    concurrency: parseInt(process.env.WORKER_CONCURRENCY || '5') || 5,
   },
   rateLimit: {
-    maxEmailsPerHour: parseInt(process.env.MAX_EMAILS_PER_HOUR || '200'),
-    minDelayBetweenEmails: parseInt(process.env.MIN_DELAY_BETWEEN_EMAILS || '2000'),
+    maxEmailsPerHour: parseInt(process.env.MAX_EMAILS_PER_HOUR || '200') || 200,
+    minDelayBetweenEmails: parseInt(process.env.MIN_DELAY_BETWEEN_EMAILS || '2000') || 2000,
   },
 };
