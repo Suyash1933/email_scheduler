@@ -11,7 +11,7 @@ export const config = {
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID || '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-    callbackUrl: `http://localhost:${process.env.PORT || '5000'}/auth/callback`,
+    callbackUrl: process.env.GOOGLE_CALLBACK_URL || `http://localhost:${process.env.PORT || '5000'}/auth/callback`,
   },
   session: {
     secret: process.env.SESSION_SECRET || 'default-secret',
